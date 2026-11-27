@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Customer Support Chatbot — Demo | Aqua Ter</title>
+<meta name="description" content="An AI support chatbot for online stores: instant order tracking, shipping and returns answers, stock checks, and smooth escalation to a human agent. Interactive demo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#">Aqua&nbsp;Ter <span>· AI Agent Services</span></a>
+    <nav class="nav">
+      <a href="#demo">Live demo</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#how">How it works</a>
+      <a href="#contact" class="nav-cta">Request a quote</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero wrap">
+    <p class="eyebrow">AI Customer Support Chatbot — interactive demo</p>
+    <h1>Support that answers<br>in seconds, day and night.</h1>
+    <p class="lede">A chatbot trained on your store: it tracks orders, explains shipping and returns, checks stock, and hands tricky cases to a human — with a ticket, not a dead end. No missed questions, no 2am inbox.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#demo">Try the live demo</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+    <p class="sample-note"><span class="demo-badge">Demo — sample data</span> Store, products, orders and conversations below are fictional examples. Try order <strong>#NW-1042</strong> in the chat.</p>
+  </section>
+
+  <!-- DEMO -->
+  <section id="demo" class="demo wrap">
+    <h2>Live demo</h2>
+    <p class="section-sub">Left: what your customer sees. Right: what your team sees. Ask the bot anything — then watch the admin panel update.</p>
+
+    <div class="demo-grid">
+      <!-- CHAT -->
+      <div class="chat-card">
+        <div class="chat-header">
+          <div class="chat-store">
+            <span class="store-avatar" aria-hidden="true">N</span>
+            <div>
+              <p class="store-name" id="storeName">Northwind Supply Co.</p>
+              <p class="store-status"><span class="dot"></span> Online — replies instantly</p>
+            </div>
+          </div>
+          <button id="resetChatBtn" class="btn btn-ghost btn-small" type="button">Restart chat</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+
+        <div class="quick-chips" id="quickChips" aria-label="Quick replies"></div>
+
+        <form id="chatForm" class="chat-input-row" autocomplete="off">
+          <label class="visually-hidden" for="chatInput">Type your message</label>
+          <input id="chatInput" type="text" placeholder="Type a message…" maxlength="300">
+          <button id="sendBtn" class="btn btn-primary btn-send" type="submit">Send</button>
+        </form>
+        <p class="chat-footnote">Try: “Where is my order #NW-1042?” · “Is the Haven Mug Set in stock?” · “How do I return something?”</p>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="admin-card">
+        <div class="admin-header">
+          <h3>Support inbox</h3>
+          <span class="unread-badge" id="unreadBadge" title="Unread conversations">2</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Total chats</span></div>
+          <div class="stat"><span class="stat-num" id="statResolved">0</span><span class="stat-label">Resolved</span></div>
+          <div class="stat"><span class="stat-num" id="statEscalated">0</span><span class="stat-label">Escalated</span></div>
+          <div class="stat"><span class="stat-num" id="statAvgResponse">0 min</span><span class="stat-label">Avg. first response</span></div>
+        </div>
+
+        <div class="filters" id="convFilters" role="tablist" aria-label="Filter conversations">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="filter-btn" data-filter="open" role="tab" aria-selected="false">Open</button>
+          <button class="filter-btn" data-filter="resolved" role="tab" aria-selected="false">Resolved</button>
+          <button class="filter-btn" data-filter="escalated" role="tab" aria-selected="false">Escalated</button>
+        </div>
+
+        <div class="admin-body">
+          <div id="convList" class="conv-list" role="listbox" aria-label="Conversations"></div>
+          <div class="conv-detail" id="convDetail">
+            <p class="conv-empty">Select a conversation to read it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="sample-note">Escalations from the live chat appear here as new tickets, marked <strong>Escalated</strong> with an unread badge.</p>
+  </section>
+
+  <!-- CATALOG -->
+  <section id="catalog" class="catalog wrap">
+    <h2>What the bot knows</h2>
+    <p class="section-sub">The demo store's catalog, shipping zones and policies — all editable. The bot answers from this knowledge base, so it never invents a price or a deadline.</p>
+    <div id="productGrid" class="product-grid"></div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <h3>Shipping</h3>
+        <ul id="shippingList" class="policy-list"></ul>
+      </div>
+      <div class="policy-card">
+        <h3>Returns — 30 days</h3>
+        <p id="returnSummary"></p>
+      </div>
+      <div class="policy-card">
+        <h3>Payment &amp; discounts</h3>
+        <p id="paymentSummary"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how wrap">
+    <h2>How the chatbot works</h2>
+    <p class="section-sub">Five steps, no guesswork. Every step leaves a record your team can check.</p>
+    <ol class="steps">
+      <li><strong>Answer instantly</strong><span>Order tracking, shipping, returns, stock and payments — answered from your knowledge base in under a second.</span></li>
+      <li><strong>Know when to stop</strong><span>If the question is outside the knowledge base, the bot says so honestly instead of guessing.</span></li>
+      <li><strong>Escalate cleanly</strong><span>It opens a ticket, summarises the conversation, and tells the customer exactly when a human will reply.</span></li>
+      <li><strong>Keep the inbox tidy</strong><span>Every chat is logged with topic, status and first-response time, so nothing falls through the cracks.</span></li>
+      <li><strong>Learn from the data</strong><span>Weekly report: top questions, escalations, and the answers worth adding to the knowledge base.</span></li>
+      <li><strong>Stay on brand</strong><span>Tone, greeting and escalation rules are set by you — the bot speaks like your team, not like a template.</span></li>
+    </ol>
+  </section>
+
+  <!-- DELIVERABLES -->
+  <section class="deliverables wrap">
+    <h2>What you get</h2>
+    <div class="deliv-grid">
+      <div class="deliv-card">
+        <h3>Chatbot on your store</h3>
+        <p>Embedded on your site in your brand colours, answering 24/7 from your own knowledge base.</p>
+      </div>
+      <div class="deliv-card">
+        <h3>Admin inbox</h3>
+        <p>Every conversation in one place — filterable, searchable, with response times and escalation tickets.</p>
+      </div>
+      <div class="deliv-card">
+        <h3>Knowledge base setup</h3>
+        <p>Your products, shipping zones, returns and payment info loaded and tested before launch.</p>
+      </div>
+      <div class="deliv-card">
+        <h3>Weekly report</h3>
+        <p>Top questions, unresolved topics, and suggested answers — so the bot keeps getting smarter.</p>
+      </div>
+    </div>
+    <p class="pricing-note">Pricing is agreed after scope is clear — no fixed price upfront. You only pay for the setup you approve.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact wrap">
+    <h2>Want this for your store?</h2>
+    <p class="section-sub">Copy the message below and send it to Aqua Ter — include your store link and how many support messages you get a week, and you will get a quote.</p>
+    <div class="dm-box">
+      <p id="dmText">Hi Aqua Ter — I'd like the AI Customer Support Chatbot for my online store. My store: [paste your store link]. I get about [number] support messages per week. Please send me a quote.</p>
+      <button id="copyDmBtn" class="btn btn-primary">Copy message</button>
+      <span id="copyDmState" class="copy-state" aria-live="polite"></span>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Demo by <strong>Aqua Ter</strong> — AI agent services for online stores. Sample data for demonstration only; store, products, orders and conversations are fictional examples.</p>
+    <p><a href="https://github.com/frenkiofficial">View the source on GitHub</a></p>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
